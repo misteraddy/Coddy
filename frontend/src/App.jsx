@@ -1,12 +1,16 @@
-import React from "react";
-import { Button } from "./components/ui/button";
+import { Route, Routes } from 'react-router-dom'
+import './App.css'
+import { CreateProject } from './pages/CreateProject'
 
 function App() {
+
+
   return (
-    <div>
-      <Button>hello</Button>
-    </div>
-  );
+    <Routes>
+      <Route path="/" element={<CreateProject />} />
+    </Routes>
+  )
+  
 }
 
-export default App;
+export default App

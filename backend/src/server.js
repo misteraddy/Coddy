@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import v1Router from "./routes/v1/v1Routes.js";
 import responseLogger from "./loggers/responselogger.js";
+import requestLogger from "./loggers/requestLogger.js";
 
 dotenv.config();
 
@@ -16,7 +17,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
 app.use(cors());
 
+app.use(requestLogger);
+
 app.use(responseLogger);
+
 
 // API Routes
 app.use("/api/v1", v1Router);
