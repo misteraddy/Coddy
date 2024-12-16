@@ -1,52 +1,30 @@
-import util from "util";
-import child_process from "child_process";
-import fs from "fs/promises";
-import uuid4 from "uuid4";
+// Controller: projectController.js
+import {
+  createNewProject,
+  getProjectTreeService,
+} from "../services/projectService.js";
 import { successResponse, errorResponse } from "../utils/responseHandler.js";
 
-const execPromisified = util.promisify(child_process.exec);
-
 export const createProject = async (req, res) => {
-  const tech = req.body.projectType; 
-
+  const tech = req.body.projectType;
   console.log("Requested technology:", tech);
 
   try {
-
-    const projectId = uuid4();
-    console.log("Generated Project ID:", projectId);
-
-    await fs.mkdir(`./projects/${projectId}`);
-
-    let command;
-    switch (tech) {
-      case "react":
-        command = "npm create vite@latest sandbox -- --template react";
-        break;
-
-      case "svelte":
-        command = "npm create vite@latest sandbox -- --template svelte";
-        break;
-
-      case "vue":
-        command = "npm create vite@latest sandbox -- --template vue";
-        break;
-
-      case "qwik":
-        command = "npm create vite@latest sandbox -- --template qwik";
-        break;
-
-      default:
-        return errorResponse(res, "Invalid project type specified");
-    }
-
-    console.log(`Executing command: ${command}`);
-
-    await execPromisified(command, { cwd: `./projects/${projectId}` });
-
+    const projectId = await createNewProject(tech);
     return successResponse(res, { projectId }, "Project created successfully");
   } catch (error) {
     console.error("Error during project creation:", error);
     return errorResponse(res, "Failed to create project");
+  }
+};
+
+export const getDirectoryTree = async (req, res) => {
+  try {
+    const tree = await getProjectTreeService(req.params.projectId);
+
+    return successResponse(res, tree, "Successfully fetched the tree");
+  } catch (error) {
+    console.error("Error in fetching the tree:", error);
+    return errorResponse(res, "Failed to fetch the tree");
   }
 };
