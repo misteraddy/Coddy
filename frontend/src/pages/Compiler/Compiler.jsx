@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import EditorComponentContainer from "@/components/molecule/EditorComponent/EditorComponentContainer";
 import { useDirectoryTreeStore } from "@/stores/treeStructureStore";
 import Sidebar from "@/components/molecule/Sidebar/Sidebar";
+import { io } from "socket.io-client";
+import { useEditorSocketStore } from "@/stores/editorSocketStore";
+import FileFolderDialog from "@/components/molecule/FileFolderDialog/FileFolderDialog";
 
 function Compiler() {
   const [activeTab, setActiveTab] = useState("Home");
@@ -13,12 +16,20 @@ function Compiler() {
 
   const { folderId: projectIdFromUrl } = useParams();
   const { projectId, setProjectId } = useDirectoryTreeStore();
+  const { editorSocket, setEditorSocket } = useEditorSocketStore();
 
   useEffect(() => {
     if (projectIdFromUrl) {
       setProjectId(projectIdFromUrl);
+
+      const editorSocketConn = io(`http://localhost:8081/editor`, {
+        query: {
+          projectId: projectIdFromUrl,
+        },
+      });
+      setEditorSocket(editorSocketConn);
     }
-  }, [projectIdFromUrl, setProjectId]);
+  }, [projectIdFromUrl, setProjectId, setEditorSocket]);
 
   return (
     projectId && (
@@ -31,6 +42,8 @@ function Compiler() {
         <main className="flex-grow">
           <EditorComponentContainer />
         </main>
+        
+        <FileFolderDialog />
       </div>
     )
   );

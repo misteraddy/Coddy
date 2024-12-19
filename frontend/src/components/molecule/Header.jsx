@@ -15,7 +15,7 @@ function Header() {
   })
 
   return (
-    <div className="flex justify-between items-center dark:bg-[] p-4 shadow-md z-50">
+    <div className="flex justify-between items-center bg-gray-100 dark:bg-black p-4 border z-50">
       <img
         className="w-auto h-6 xs:h-10 sm:h-10"
         src={theme.theme === "dark" ? MySvgIconDark : MySvgIcon}

@@ -1,35 +1,38 @@
 import React, { useEffect, useState } from "react";
 import EditorComponent from "./EditorComponent";
+import { useEditorSocketStore } from "@/stores/editorSocketStore";
+import { useActiveFileTabStore } from "@/stores/activeFileTabStore";
+import { useTheme } from "@/components/atoms/DarkMode/ThemeProvider";
 
 function EditorComponentContainer() {
-  const [editorState, setEditorState] = useState({
-    theme: null,
-  });
+  const { theme } = useTheme();
+  const { editorSocket } = useEditorSocketStore();
+  const { activeFileTab } = useActiveFileTabStore();
 
-  async function downloadTheme() {
-    const response = await fetch("/themes/Dracula.json");
-    const data = await response.json();
-    console.log(data);
-    setEditorState({ ...editorState, theme: data });
+  let timerId = null;
+
+  const handleEditorTheme = theme === "dark" ? "vs-dark" : "light";
+
+  function handleChange(value) {
+    if (timerId !== null) {
+      clearTimeout(timerId);
+    }
+
+    timerId = setTimeout(() => {
+      editorSocket.emit("writeFile", {
+        data: value,
+        pathToFileOrFolder: activeFileTab.path,
+      });
+    }, 2000);
   }
-
-  function handleEditorTheme(editor, monaco) {
-    monaco.editor.defineTheme("dracula", editorState.theme);
-    monaco.editor.setTheme("dracula");
-  }
-
-  useEffect(() => {
-    downloadTheme();
-  }, []);
 
   return (
-    <>
-      <EditorComponent
-        editorState={editorState}
-        handleEditorTheme={handleEditorTheme}
-      />
-    </>
+    <EditorComponent
+      handleEditorTheme={handleEditorTheme}
+      handleChange={handleChange}
+    />
   );
 }
+
 
 export default EditorComponentContainer;

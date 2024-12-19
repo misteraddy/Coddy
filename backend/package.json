@@ -12,12 +12,14 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "chokidar": "^4.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "directory-tree": "^3.5.2",
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "on-headers": "^1.0.2",
+    "socket.io": "^4.8.1",
     "uuid4": "^2.0.3",
     "uuidv4": "^6.2.13"
   },
