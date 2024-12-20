@@ -7,7 +7,7 @@ import { HiFolder } from "react-icons/hi";
 import { useFileContextMenuStore } from "@/stores/fileContextMenuStore";
 import { useFolderContextMenuStore } from "@/stores/folderContextMenuStore";
 
-function Tree({ fileFolderData }) {
+function TreeNode({ fileFolderData }) {
   const [visibility, setVisibility] = useState({});
 
   const { editorSocket } = useEditorSocketStore();
@@ -102,7 +102,7 @@ function Tree({ fileFolderData }) {
       {visibility[fileFolderData.path] && fileFolderData?.children && (
         <div className="pl-4 mt-2">
           {fileFolderData.children.map((child) => (
-            <Tree key={child.path} fileFolderData={child} />
+            <TreeNode key={child.path} fileFolderData={child} />
           ))}
         </div>
       )}
@@ -110,4 +110,4 @@ function Tree({ fileFolderData }) {
   );
 }
 
-export default Tree;
+export default TreeNode;

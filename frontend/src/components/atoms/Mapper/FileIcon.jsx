@@ -10,9 +10,9 @@ export const FileIcon = ({ extension }) => {
     const IconMapper = {
         "js": <FaJs className="mt-2 dark:text-white" />,
         "jsx": <GrReactjs className="mt-2 dark:text-white" />,
-        "css": <FaCss3 className="dark:text-white"  />,
+        "css": <FaCss3 className="mt-2 dark:text-white"  />,
         "html": <FaHtml5 className="mt-2 dark:text-white" />,
-        "svg":  <TbSvg className="dark:text-white" />,
+        "svg":  <TbSvg className="mt-2 dark:text-white" />,
         "json": <BsFiletypeJson className="mt-2 dark:text-white" />,
         "gitignore": <SiGitignoredotio className="mt-2 dark:text-white" />,
         "md": <CgReadme className="mt-2 dark:text-white" />

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useDirectoryTreeStore } from "@/stores/treeStructureStore";
-import Tree from "../Tree/Tree";
+import Tree from "../Tree/TreeNode";
 import { useFileContextMenuStore } from "@/stores/fileContextMenuStore";
 import { useFolderContextMenuStore } from "@/stores/folderContextMenuStore"; // Import folder context menu store
 import ContextMenuFile from "@/components/atoms/ContextMenu/ContextMenuFile";

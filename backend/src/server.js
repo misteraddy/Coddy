@@ -10,6 +10,8 @@ import { handleChokidarEvents } from "./utils/chokidarEvents.js";
 import { handleEditorSocketEvents } from "./socketHandler/editorHandler.js";
 import requestLogger from "./loggers/requestLogger.js";
 import responseLogger from "./loggers/responseLogger.js";
+import { handleTerminalSocketEvents } from "./socketHandler/terminalHandler.js";
+import { handleContainerCreate } from "./containers/handleContainerCreate.js";
 
 dotenv.config();
 
@@ -41,11 +43,26 @@ editorNamespace.on("connection", (socket) => {
   const projectId = socket.handshake.query["projectId"];
 
   if (projectId) {
-    const watcher = chokidar.watch(`/projects/${projectId}`, chokidarConfig(projectId));
+    const watcher = chokidar.watch(
+      `/projects/${projectId}`,
+      chokidarConfig(projectId)
+    );
     handleChokidarEvents(watcher);
   }
 
   handleEditorSocketEvents(socket);
+});
+
+const terminalNamespace = io.of("/terminal");
+
+terminalNamespace.on("connection", (socket) => {
+  console.log("Terminal connected");
+
+  const projectId = socket.handshake.query["projectId"];
+
+  handleTerminalSocketEvents(socket, terminalNamespace);
+
+  handleContainerCreate(projectId, socket);
 });
 
 // Fallback for PORT
