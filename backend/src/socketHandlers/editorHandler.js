@@ -1,10 +1,13 @@
 import fs from "fs/promises";
-export const handleEditorSocketEvents = (socket) => {
+import { getContainerPort } from "../containers/handleContainerCreate.js";
+
+export const handleEditorSocketEvents = (socket, editorNamespace) => {
     socket.on("writeFile", async ({ data, pathToFileOrFolder }) => {
         try {
             const response = await fs.writeFile(pathToFileOrFolder, data);
-            socket.emit("writeFileSuccess", {
+            editorNamespace.emit("writeFileSuccess", {
                 data: "File written successfully",
+                path: pathToFileOrFolder,
             })
         } catch(error) {
             console.log("Error writing the file", error);
@@ -13,6 +16,8 @@ export const handleEditorSocketEvents = (socket) => {
             });
         }
     });
+
+
     socket.on("createFile", async ({ pathToFileOrFolder }) => {
         const isFileAlreadyPresent = await fs.stat(pathToFileOrFolder);
         if(isFileAlreadyPresent) {
@@ -21,6 +26,7 @@ export const handleEditorSocketEvents = (socket) => {
             });
             return;
         }
+
         try {
             const response = await fs.writeFile(pathToFileOrFolder, "");
             socket.emit("createFileSuccess", {
@@ -33,6 +39,8 @@ export const handleEditorSocketEvents = (socket) => {
             });
         }
     });
+
+
     socket.on("readFile", async ({ pathToFileOrFolder }) => {
         try {
             const response = await fs.readFile(pathToFileOrFolder);
@@ -48,6 +56,7 @@ export const handleEditorSocketEvents = (socket) => {
             });
         }
     });
+
     socket.on("deleteFile", async ({ pathToFileOrFolder }) => {
         try {
             const response = await fs.unlink(pathToFileOrFolder);
@@ -61,6 +70,7 @@ export const handleEditorSocketEvents = (socket) => {
             });
         }
     });
+
     socket.on("createFolder", async ({ pathToFileOrFolder}) => {
         try {
             const response = await fs.mkdir(pathToFileOrFolder);
@@ -74,6 +84,7 @@ export const handleEditorSocketEvents = (socket) => {
             });
         }
     });
+
     socket.on("deleteFolder", async ({ pathToFileOrFolder }) => {
         try {
             const response = await fs.rmdir(pathToFileOrFolder, { recursive: true });
@@ -87,4 +98,13 @@ export const handleEditorSocketEvents = (socket) => {
             });
         }
     });
+
+    socket.on("getPort", async ({ containerName }) => {
+        const port = await getContainerPort(containerName);
+        console.log("port data", port);
+        socket.emit("getPortSuccess", {
+            port: port,
+        })
+    })
+
 }

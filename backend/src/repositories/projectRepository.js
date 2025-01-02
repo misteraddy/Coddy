@@ -6,7 +6,6 @@ const execPromisified = util.promisify(child_process.exec);
 
 export const createProjectDirectory = async (projectId) => {
   const directoryPath = `./projects/${projectId}`;
-  console.log(`Creating directory: ${directoryPath}`);
   await fs.mkdir(directoryPath);
 };
 

@@ -1,28 +1,27 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./src/server.js",
-    "dev": "nodemon ./src/server.js"
+    "dev": "npx nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "chokidar": "^4.0.3",
+    "chokidar": "^4.0.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "directory-tree": "^3.5.2",
     "dockerode": "^4.0.2",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.4.6",
     "express": "^4.21.1",
     "on-headers": "^1.0.2",
     "socket.io": "^4.8.1",
     "uuid4": "^2.0.3",
-    "uuidv4": "^6.2.13"
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"

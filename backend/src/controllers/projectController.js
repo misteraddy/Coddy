@@ -7,7 +7,6 @@ import { successResponse, errorResponse } from "../utils/responseHandler.js";
 
 export const createProject = async (req, res) => {
   const tech = req.body.projectType;
-  console.log("Requested technology:", tech);
 
   try {
     const projectId = await createNewProject(tech);
